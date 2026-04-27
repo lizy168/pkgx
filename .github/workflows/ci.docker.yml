@@ -27,7 +27,7 @@ jobs:
     steps:
       - uses: actions/checkout@v6
 
-      - uses: robinraju/release-downloader@v1.12
+      - uses: robinraju/release-downloader@v1.13
         with:
           fileName: pkgx-*+linux+x86-64.tar.gz
           latest: true
