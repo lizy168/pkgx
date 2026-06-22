@@ -25,7 +25,7 @@ jobs:
           - debian
           - ubuntu
     steps:
-      - uses: actions/checkout@v6
+      - uses: actions/checkout@v7
 
       - uses: robinraju/release-downloader@v1.13
         with:
