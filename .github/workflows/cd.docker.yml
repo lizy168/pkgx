@@ -29,6 +29,8 @@ jobs:
             platforms: linux/amd64
           - variety: debian
             platforms: linux/amd64,linux/arm64
+          - variety: slim
+            platforms: linux/amd64,linux/arm64
           - variety: ubuntu
             platforms: linux/amd64,linux/arm64
     runs-on: ubuntu-latest

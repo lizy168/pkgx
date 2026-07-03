@@ -1,0 +1,14 @@
+FROM debian:stable-slim AS stage0
+COPY ./products/* /pkgx/
+RUN install -m 755 /pkgx/$(uname -m) /usr/local/bin/pkgx
+RUN install -m 755 /pkgx/pkgm /usr/local/bin/pkgm
+
+# The "slim" image: bare debian + the pkgx/pkgm binaries, nothing else. Great for
+# running pkgx-installed tools with the smallest footprint. If you intend to
+# *compile* anything (eg. `bk`, or pip packages with C extensions), use the fat
+# `pkgxdev/pkgx` (default) image instead — it ships the base build/dev libraries.
+FROM debian:stable-slim AS stage1
+COPY --from=stage0 /usr/local/bin/pkgx /usr/local/bin/pkgm /usr/local/bin/
+
+CMD ["/bin/bash"]
+ENTRYPOINT ["/usr/local/bin/pkgx"]
