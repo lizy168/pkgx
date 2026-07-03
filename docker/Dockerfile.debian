@@ -4,6 +4,17 @@ RUN install -m 755 /pkgx/$(uname -m) /usr/local/bin/pkgx
 RUN install -m 755 /pkgx/pkgm /usr/local/bin/pkgm
 
 FROM debian:stable-slim AS stage1
+# The default `pkgxdev/pkgx` image is the "fat" one: it carries the base system
+# dev libraries a hermetic pkgx/brewkit toolchain still links against (libc
+# headers, libstdc++/libgcc, &c). Without these, compiling anything fails with
+# e.g. `stdlib.h: No such file or directory`. See `Dockerfile.slim` for the
+# minimal runtime-only image (`pkgxdev/pkgx:slim`).
+# g++ (not build-essential) pulls the default-gcc libstdc++/libgcc dev libs
+# without make/dpkg-dev, and version-agnostically — no rot-prone version pin.
+RUN apt-get update \
+ && apt-get install --yes --no-install-recommends \
+      libc6-dev g++ libudev-dev netbase ca-certificates \
+ && rm -rf /var/lib/apt/lists/*
 COPY --from=stage0 /usr/local/bin/pkgx /usr/local/bin/pkgm /usr/local/bin/
 
 CMD ["/bin/bash"]
