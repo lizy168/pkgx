@@ -141,15 +141,18 @@ function execve(arg0: Deno.PointerValue, args: Deno.PointerValue, env: Deno.Poin
         parameters: ["pointer", "pointer", "pointer"],
         result: "i32"
       },
-      errno: {
-        type: "i32"
+      errno_location: {
+        name: host().platform == 'darwin' ? "__error" : "__errno_location",
+        parameters: [],
+        result: "pointer"
       }
     }
   )
 
   try {
     libc.symbols.execve(arg0, args, env)
-    return libc.symbols.errno
+    const errno = libc.symbols.errno_location()
+    return errno ? new Deno.UnsafePointerView(errno).getInt32() : 0
   } finally {
     libc.close()
   }
