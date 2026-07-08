@@ -72,15 +72,17 @@ jobs:
     env:
       FILENAME: pkgx-${{ github.event.inputs.version }}+${{ matrix.platform.build-id }}.tar.xz
     steps:
+      - uses: actions/checkout@v4
       - uses: actions/download-artifact@v4
         with:
           name: srcs
 
-      - uses: pkgxdev/setup@v2
+      - uses: ./.github/actions/setup-apt
+        if: startsWith(matrix.platform.build-id, 'linux+')
         with:
-          +: unzip xz
+          packages: xz-utils unzip
 
-      - run: pkgx +xz tar xJf pkgx-${{ github.event.inputs.version }}.tar.xz --strip-components=1
+      - run: tar xJf pkgx-${{ github.event.inputs.version }}.tar.xz --strip-components=1
 
       # we would prefer this, but our pkging is not stable enough :/
     # - uses: pkgxdev/dev@v0

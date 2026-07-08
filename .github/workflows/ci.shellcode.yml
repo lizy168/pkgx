@@ -5,6 +5,7 @@ on:
     paths:
       - src/modes/shellcode.*
       - src/prefab/construct-env.*
+      - .github/actions/setup-apt/**
       - .github/workflows/ci.shellcode.yml
 
   workflow_call:
@@ -41,10 +42,12 @@ jobs:
           path: /usr/local/bin
           name: pkgx
 
-      - name: prep
-        run: |
-            apt-get update && apt-get --yes install bash libatomic1
-            chmod u+x /usr/local/bin/pkgx
+      - uses: actions/checkout@v4
+      - run: chmod u+x /usr/local/bin/pkgx
+        shell: sh
+      - uses: ./.github/actions/setup-apt
+        with:
+          packages: bash libatomic1
 
       - run: |
           test -n "$BASH_VERSION"
@@ -134,11 +137,12 @@ jobs:
           path: /usr/local/bin
           name: pkgx
 
-      - name: prep
-        run: |
-          apt-get update && apt-get --yes install zsh libatomic1
-          chmod u+x /usr/local/bin/pkgx
-        shell: sh  # ∵ cannot be zsh until zsh is installed
+      - uses: actions/checkout@v4
+      - run: chmod u+x /usr/local/bin/pkgx
+        shell: sh
+      - uses: ./.github/actions/setup-apt
+        with:
+          packages: zsh libatomic1
 
       # NOTE matrix does not work for the shell key :-/
       - run: |
@@ -239,10 +243,12 @@ jobs:
           path: /usr/local/bin
           name: pkgx
 
-      - name: prep
-        run: |
-          apt-get update && apt-get --yes install libatomic1
-          chmod u+x /usr/local/bin/pkgx
+      - uses: actions/checkout@v4
+      - run: chmod u+x /usr/local/bin/pkgx
+        shell: sh
+      - uses: ./.github/actions/setup-apt
+        with:
+          packages: libatomic1
 
       # NOTE matrix does not work for the shell key :-/
       - name: test `use` shellcode
@@ -302,10 +308,12 @@ jobs:
           path: /usr/local/bin
           name: pkgx
 
-      - name: prep
-        run: |
-          apt-get update && apt-get --yes install bash libatomic1
-          chmod u+x /usr/local/bin/pkgx
+      - uses: actions/checkout@v4
+      - run: chmod u+x /usr/local/bin/pkgx
+        shell: sh
+      - uses: ./.github/actions/setup-apt
+        with:
+          packages: bash libatomic1
 
       - run: |
           eval "$(pkgx --shellcode)"
@@ -345,10 +353,12 @@ jobs:
           path: /usr/local/bin
           name: pkgx
 
-      - name: prep
-        run: |
-          apt-get update && apt-get --yes install bash libatomic1
-          chmod u+x /usr/local/bin/pkgx
+      - uses: actions/checkout@v4
+      - run: chmod u+x /usr/local/bin/pkgx
+        shell: sh
+      - uses: ./.github/actions/setup-apt
+        with:
+          packages: bash libatomic1
 
       - run: |
           echo '#!/usr/bin/env -S pkgx +ack node' > foo
@@ -444,11 +454,12 @@ jobs:
         with:
           path: /usr/local/bin
           name: pkgx
-      - name: prep
-        run: |
-          sudo apt-get update && sudo apt-get --yes install zsh libatomic1
-          chmod u+x /usr/local/bin/pkgx
+      - uses: actions/checkout@v4
+      - run: chmod u+x /usr/local/bin/pkgx
         shell: sh
+      - uses: ./.github/actions/setup-apt
+        with:
+          packages: zsh libatomic1
       - run: |
           alias x="echo hi"
           eval "$(pkgx --shellcode)"

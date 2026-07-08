@@ -1,0 +1,22 @@
+name: setup-apt
+description: Update Debian Buster apt sources if needed, then install packages.
+inputs:
+  packages:
+    description: Space-separated package list for apt-get install.
+    required: true
+runs:
+  using: composite
+  steps:
+    - shell: sh
+      run: |
+        SUDO=
+        if command -v sudo >/dev/null 2>&1; then
+          SUDO=sudo
+        fi
+
+        if [ -f /etc/debian_version ] && grep -q '^10' /etc/debian_version; then
+          echo "Debian Buster detected, updating apt-get sources."
+          $SUDO sed -i 's/deb\.debian/archive\.debian/g' /etc/apt/sources.list
+        fi
+        $SUDO apt-get update
+        $SUDO apt-get install --yes ${{ inputs.packages }}
