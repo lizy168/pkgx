@@ -927,7 +927,7 @@ checksum = "b5b646652bf6661599e1da8901b3b9522896f01e736bad5f723fe7a3a27f899d"
 
 [[package]]
 name = "libpkgx"
-version = "0.8.2"
+version = "0.9.0"
 dependencies = [
  "anyhow",
  "async-compression",
@@ -1215,7 +1215,7 @@ checksum = "953ec861398dccce10c670dfeaf3ec4911ca479e9c02154b3a215178c5f566f2"
 
 [[package]]
 name = "pkgx"
-version = "2.10.3"
+version = "2.11.0"
 dependencies = [
  "console",
  "indicatif",
