@@ -11,6 +11,8 @@ pub mod pantry_db;
 pub mod platform_case_aware_env_key;
 pub mod resolve;
 pub mod sync;
+#[cfg(test)]
+mod tests;
 pub mod types;
 pub mod utils;
 

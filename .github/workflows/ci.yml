@@ -72,6 +72,8 @@ jobs:
         with:
           tool: cargo-tarpaulin
       - run: cargo tarpaulin -o lcov --output-dir coverage
+      - run: brew trust coverallsapp/coveralls
+        if: matrix.os == 'macos-latest'
       - uses: coverallsapp/github-action@v2
         with:
           path-to-lcov: coverage/lcov.info
@@ -234,6 +236,8 @@ jobs:
             -Xdemangler=rustfilt \
             > lcov.info
 
+      - run: brew trust coverallsapp/coveralls
+        if: matrix.os == 'macos-latest'
       - uses: coverallsapp/github-action@v2
         with:
           path-to-lcov: lcov.info

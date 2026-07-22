@@ -87,7 +87,7 @@ pub async fn resolve(
     let mut installations = resolution.installed;
     if !resolution.pending.is_empty() {
         if env::var("PKGX_NO_INSTALL").is_ok() {
-            return Err("PKGX_NO_INSTALL is set, refusing to install pending packages")?;
+            Err("PKGX_NO_INSTALL is set, refusing to install pending packages")?;
         }
         let installed = install_multi(&resolution.pending, config, spinner.arc()).await?;
         installations.extend(installed);

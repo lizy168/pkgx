@@ -39,9 +39,7 @@ pub async fn update(config: &Config, conn: &mut Connection) -> Result<(), Box<dy
             FileExt::unlock(&lockfile)?;
             return Ok(());
         } else {
-            return Err(
-                "PKGX_PANTRY_DIR is set but does not contain a pantry (missing projects/)",
-            )?;
+            Err("PKGX_PANTRY_DIR is set but does not contain a pantry (missing projects/)")?;
         }
     }
     replace(config, conn).await
