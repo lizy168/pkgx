@@ -19,7 +19,7 @@ pub struct Package {
 
 impl fmt::Display for Package {
     fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
-        write!(f, "{}={}", self.project, &self.version)
+        write!(f, "{}={}", self.project, self.version)
     }
 }
 
@@ -63,7 +63,7 @@ impl fmt::Display for PackageReq {
         if self.constraint.raw == "*" {
             write!(f, "{}", self.project)
         } else {
-            write!(f, "{}{}", self.project, &self.constraint)
+            write!(f, "{}{}", self.project, self.constraint)
         }
     }
 }
